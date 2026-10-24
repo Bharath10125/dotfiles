@@ -1,0 +1,13 @@
+# Neovim / Vim temporary files
+*.swp
+*.swo
+*~
+*.bak
+
+# Neovim shada / logs / temporary
+.netrwhist
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
