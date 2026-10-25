@@ -35,6 +35,62 @@ return {
     },
 
     -----------------------------------------------------------
+    -- Grug-Far (VS Code-style Project Search & Replace)
+    -----------------------------------------------------------
+    {
+        "MagicDuck/grug-far.nvim",
+        cmd = "GrugFar",
+        opts = { headerMaxWidth = 80 },
+        keys = {
+            {
+                "<C-S-h>",
+                function()
+                    require("grug-far").open()
+                end,
+                desc = "Find and Replace across project",
+            },
+            {
+                "<leader>sr",
+                function()
+                    require("grug-far").open()
+                end,
+                desc = "Search and Replace across project",
+            },
+            {
+                "<leader>sw",
+                function()
+                    require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
+                end,
+                desc = "Search and Replace current word",
+            },
+        },
+    },
+
+    -----------------------------------------------------------
+    -- Multi-Cursor Editing (VS Code Ctrl+D feel)
+    -----------------------------------------------------------
+    {
+        "mg979/vim-visual-multi",
+        branch = "master",
+        init = function()
+            vim.g.VM_maps = {
+                ["Find Under"] = "<C-d>",
+                ["Find Subword Under"] = "<C-d>",
+            }
+        end,
+    },
+
+    -----------------------------------------------------------
+    -- Surround (Change/Add/Delete surrounding quotes & brackets)
+    -----------------------------------------------------------
+    {
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        opts = {},
+    },
+
+    -----------------------------------------------------------
     -- ToggleTerm (VS Code Integrated Terminal)
     -----------------------------------------------------------
     {
@@ -88,7 +144,7 @@ return {
     },
 
     -----------------------------------------------------------
-    -- Which-key (Keymap cheat sheet popup)
+    -- Which-key (Keymap cheat sheet & menu popup)
     -----------------------------------------------------------
     {
         "folke/which-key.nvim",
@@ -96,6 +152,20 @@ return {
         opts = {
             preset = "modern",
         },
+        config = function(_, opts)
+            local wk = require("which-key")
+            wk.setup(opts)
+            wk.add({
+                { "<leader>f", group = "Find / Files" },
+                { "<leader>s", group = "Search & Replace" },
+                { "<leader>c", group = "Code / LSP" },
+                { "<leader>p", group = "PlatformIO" },
+                { "<leader>b", group = "Buffers / Tabs" },
+                { "<leader>t", group = "Terminal" },
+                { "<leader>w", group = "Windows / Splits" },
+                { "<leader>x", group = "Trouble / Diagnostics" },
+            })
+        end,
     },
 
     -----------------------------------------------------------

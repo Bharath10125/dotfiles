@@ -36,4 +36,17 @@ return {
             })
         end,
     },
+
+    -----------------------------------------------------------
+    -- Treesitter Context (VS Code Sticky Scroll)
+    -----------------------------------------------------------
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        event = { "BufReadPost", "BufNewFile" },
+        opts = {
+            max_lines = 3,
+            multiline_threshold = 1,
+            trim_scope = "outer",
+        },
+    },
 }

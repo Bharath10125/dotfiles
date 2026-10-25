@@ -56,6 +56,18 @@ return {
     },
 
     -----------------------------------------------------------
+    -- Breadcrumbs (VS Code winbar: File > Class > Function)
+    -----------------------------------------------------------
+    {
+        "Bekaboo/dropbar.nvim",
+        event = { "BufReadPost", "BufNewFile" },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        opts = {},
+    },
+
+    -----------------------------------------------------------
     -- Indent Guidelines (VS Code indentation lines)
     -----------------------------------------------------------
     {

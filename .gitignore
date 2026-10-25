@@ -1,3 +1,7 @@
+# Shell history / runtime
+.zsh_history
+.bash_history
+
 # Neovim / Vim temporary files
 *.swp
 *.swo

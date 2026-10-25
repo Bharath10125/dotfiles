@@ -60,3 +60,7 @@ opt.confirm = true
 
 -- Block selection allows cursor anywhere
 opt.virtualedit = "block"
+
+-- Disable built-in netrw in favor of Neo-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

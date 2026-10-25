@@ -141,7 +141,7 @@ keymap("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
 keymap("n", "<S-F12>", vim.lsp.buf.references, { desc = "Find references" })
 keymap("n", "gr", vim.lsp.buf.references, { desc = "Find references" })
 
--- Hover Documentation (K)
+-- Hover Documentation (K) with rounded border
 keymap("n", "K", function()
     vim.lsp.buf.hover({ border = "rounded" })
 end, { desc = "Hover documentation" })
@@ -172,3 +172,109 @@ keymap("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostics"
 -- Trouble diagnostics panel (Problems panel)
 keymap("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
 keymap("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
+
+-----------------------------------------------------------
+-- Beginner Cheat Sheet & Help Popup
+-----------------------------------------------------------
+
+local function show_cheatsheet()
+    local lines = {
+        "  ╔════════════════════════════════════════════════════════════════╗",
+        "  ║                NEOVIM (VS CODE STYLE) CHEAT SHEET              ║",
+        "  ╚════════════════════════════════════════════════════════════════╝",
+        "",
+        "  [ FILE & SIDEBAR ]",
+        "    Ctrl + s            Save current file (Normal / Insert / Visual)",
+        "    Ctrl + b  or  <Space>e  Toggle left sidebar file tree (Neo-tree)",
+        "    <Space>E            Reveal & focus current file in tree",
+        "    Ctrl + p  or  <Space>ff Quick Open file by name (Telescope)",
+        "    <Space>fb           Switch between open file buffers",
+        "    <Space>fr           Open recent files",
+        "    Ctrl + w  or  <Space>x  Close current file tab",
+        "",
+        "  [ SEARCH & REPLACE ]",
+        "    <Space>fg or  <Space>/  Live text search across project",
+        "    Ctrl + Shift + H    Global Search & Replace panel (Grug-far)",
+        "    <Space>sr           Global Search & Replace panel",
+        "    <Space>sw           Replace word under cursor across project",
+        "    Esc                 Clear search highlighting",
+        "",
+        "  [ EDITING & MULTI-CURSOR ]",
+        "    Ctrl + d            Select word & add next cursor (Multi-cursor)",
+        "    Alt + Up / Down     Move current line / selection up or down",
+        "    Ctrl + /            Toggle line comment (or Ctrl + _)",
+        "    <  and  >           Indent / unindent selection (in visual mode)",
+        "    cs\"'                Change surrounding double quotes to single",
+        "    ysiw)               Surround current word with parentheses",
+        "    ds\"                 Delete surrounding double quotes",
+        "",
+        "  [ TERMINAL & TABS ]",
+        "    Ctrl + `  or  Ctrl+j Toggle bottom integrated terminal",
+        "    <Space>tf           Open floating terminal window",
+        "    Tab / Shift + Tab   Switch to next / previous open tab",
+        "    Ctrl + h/j/k/l      Navigate between split panes (left/down/up/right)",
+        "",
+        "  [ CODE INTELLIGENCE & LSP ]",
+        "    F2        or  <Space>cr Rename symbol project-wide",
+        "    F12       or  gd    Go to Definition",
+        "    Shift+F12 or  gr    Find all References",
+        "    K                   Hover documentation / tooltip",
+        "    Alt+Enter or  Ctrl+. Code Actions / Quick Fix (<Space>ca)",
+        "    Shift+Alt+F or <Space>cf Format document (also formats on save)",
+        "    [d  /  ]d           Jump to previous / next error or warning",
+        "    <Space>xx           Toggle Problems panel (Trouble)",
+        "",
+        "  [ PLATFORMIO (EMBEDDED) ]",
+        "    <Space>pm           PlatformIO wizard / init menu",
+        "    <Space>pb           Build / compile firmware (pio run)",
+        "    <Space>pu           Upload firmware to board (pio run -t upload)",
+        "    <Space>ps           Open serial monitor (pio device monitor)",
+        "    <Space>pr           Upload & open serial monitor",
+        "    <Space>pd           Generate clangd DB (compile_commands.json)",
+        "    <Space>pc           Clean build artifacts",
+        "    <Space>pl           List connected devices / COM ports",
+        "",
+        "  [ HELP & SHORTCUT FINDER ]",
+        "    F1        or  <Space>?  Open this cheat sheet",
+        "    <Space>sk           Search all active shortcuts interactively",
+        "    <Space>fc           Command palette",
+        "",
+        "             [ Press q or Esc to close this popup ]",
+    }
+
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.bo[buf].modifiable = false
+    vim.bo[buf].filetype = "cheatsheet"
+
+    local width = 72
+    local height = math.min(#lines, vim.o.lines - 4)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    local win = vim.api.nvim_open_win(buf, true, {
+        relative = "editor",
+        row = row,
+        col = col,
+        width = width,
+        height = height,
+        style = "minimal",
+        border = "rounded",
+        title = " 󰌌 Shortcuts Cheat Sheet (F1 or <Space>?) ",
+        title_pos = "center",
+    })
+
+    local close = function()
+        if vim.api.nvim_win_is_valid(win) then
+            vim.api.nvim_win_close(win, true)
+        end
+    end
+
+    vim.keymap.set("n", "q", close, { buffer = buf, silent = true, nowait = true })
+    vim.keymap.set("n", "<Esc>", close, { buffer = buf, silent = true, nowait = true })
+end
+
+vim.api.nvim_create_user_command("Cheatsheet", show_cheatsheet, { desc = "Show shortcuts cheat sheet" })
+keymap("n", "<F1>", show_cheatsheet, { desc = "Show shortcuts cheat sheet" })
+keymap("n", "<leader>?", show_cheatsheet, { desc = "Show shortcuts cheat sheet" })
+keymap("n", "<leader>sk", "<cmd>Telescope keymaps<cr>", { desc = "Search active keymaps" })

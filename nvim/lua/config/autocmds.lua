@@ -2,6 +2,33 @@
 -- AUTOCMDS
 -----------------------------------------------------------
 
+-- Automatically open Neo-tree sidebar on the left on startup (VS Code behavior)
+local neotree_group = vim.api.nvim_create_augroup("NeotreeOnStartup", { clear = true })
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = neotree_group,
+    desc = "Open Neo-tree sidebar on startup like VS Code",
+    callback = function(data)
+        -- Skip in diff mode, stdin, or git commit messages
+        if vim.opt.diff:get() then
+            return
+        end
+        local ft = vim.bo.filetype
+        if ft == "gitcommit" or ft == "gitrebase" then
+            return
+        end
+
+        local is_dir = vim.fn.isdirectory(data.file) == 1
+
+        if is_dir then
+            vim.cmd.cd(data.file)
+            vim.cmd("enew")
+            require("neo-tree.command").execute({ action = "show", source = "filesystem", position = "left" })
+        else
+            require("neo-tree.command").execute({ action = "show", source = "filesystem", position = "left" })
+        end
+    end,
+})
+
 -- Highlight yanked text briefly (VS Code visual feedback)
 local yank_group = vim.api.nvim_create_augroup("HighlightYank", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
