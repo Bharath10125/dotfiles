@@ -152,7 +152,10 @@ return {
                 },
             })
 
-            -- Clangd settings (C / C++)
+            -- Clangd settings (C / C++ and PlatformIO embedded)
+            -- --query-driver lets clangd run cross-compilers (avr-gcc, xtensa-g++, arm-none-eabi-gcc etc.)
+            -- to automatically discover their system include paths, which fixes all
+            -- "file not found" errors in PlatformIO projects (Arduino.h, esp_system.h, etc.)
             vim.lsp.config("clangd", {
                 cmd = {
                     "clangd",
@@ -162,6 +165,13 @@ return {
                     "--completion-style=detailed",
                     "--function-arg-placeholders",
                     "--fallback-style=llvm",
+                    -- Glob pattern (NOT expanded by vim) — clangd uses this itself to
+                    -- whitelist cross-compilers and extract their system include paths.
+                    "--query-driver="
+                        .. os.getenv("HOME")
+                        .. "/.platformio/packages/toolchain-*/bin/*,"
+                        .. os.getenv("HOME")
+                        .. "/.platformio/packages/toolchain-*/*/bin/*",
                 },
             })
 

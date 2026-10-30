@@ -65,6 +65,7 @@ keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files"
 keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Search text across workspace" })
 keymap("n", "<leader>/", "<cmd>Telescope live_grep<cr>", { desc = "Search text across workspace" })
 keymap("n", "<C-S-f>", "<cmd>Telescope live_grep<cr>", { desc = "Search text across workspace" })
+keymap("n", "<leader>fw", "<cmd>Telescope grep_string<cr>", { desc = "Search word under cursor across workspace" })
 
 -- Command Palette (Ctrl+Shift+P or Space+fc)
 keymap("n", "<leader>fc", "<cmd>Telescope commands<cr>", { desc = "Command palette" })
@@ -194,6 +195,7 @@ local function show_cheatsheet()
         "",
         "  [ SEARCH & REPLACE ]",
         "    <Space>fg or  <Space>/  Live text search across project",
+        "    <Space>fw           Search word under cursor across project",
         "    Ctrl + Shift + H    Global Search & Replace panel (Grug-far)",
         "    <Space>sr           Global Search & Replace panel",
         "    <Space>sw           Replace word under cursor across project",

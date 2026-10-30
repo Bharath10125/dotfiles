@@ -2,6 +2,43 @@
 -- AUTOCMDS
 -----------------------------------------------------------
 
+-----------------------------------------------------------
+-- PlatformIO: Detect project and warn if compile_commands.json is missing
+-- This is the #1 reason clangd shows errors in PlatformIO projects.
+-----------------------------------------------------------
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = vim.api.nvim_create_augroup("PlatformIODetect", { clear = true }),
+    desc = "Detect PlatformIO project and check for compile_commands.json",
+    callback = function()
+        vim.schedule(function()
+            local cwd = vim.fn.getcwd()
+            local pio_ini = cwd .. "/platformio.ini"
+            local compile_db = cwd .. "/compile_commands.json"
+
+            -- Check if this is a PlatformIO project
+            if vim.fn.filereadable(pio_ini) == 1 then
+                -- Check if compile_commands.json exists (needed for clangd to find headers)
+                if vim.fn.filereadable(compile_db) == 0 then
+                    vim.notify(
+                        "📡 PlatformIO project detected!\n"
+                            .. "⚠️  No compile_commands.json found — clangd may show 'file not found' errors.\n\n"
+                            .. "→ Fix: Press <Space>pd to generate it now\n"
+                            .. "→ Or run in terminal: pio run -t compiledb",
+                        vim.log.levels.WARN,
+                        { title = "PlatformIO LSP Setup" }
+                    )
+                else
+                    vim.notify(
+                        "📡 PlatformIO project — clangd ready ✓",
+                        vim.log.levels.INFO,
+                        { title = "PlatformIO LSP" }
+                    )
+                end
+            end
+        end)
+    end,
+})
+
 -- Automatically open Neo-tree sidebar on the left on startup (VS Code behavior)
 local neotree_group = vim.api.nvim_create_augroup("NeotreeOnStartup", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {

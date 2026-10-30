@@ -31,6 +31,7 @@ A quick reference guide for your terminal-based IDE setup.
 | :--- | :--- | :--- |
 | `<Space>` + `fg` | `Ctrl + Shift + F` | **Live text search** across the entire project |
 | `<Space>` + `/` | `Ctrl + Shift + F` | Live text search across project |
+| `<Space>` + `fw` | Search Word | Search word under cursor across all files |
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd> | `Ctrl + Shift + H` | **Global Search & Replace panel** (`Grug-far`) |
 | `<Space>` + `sr` | `Ctrl + Shift + H` | Open Global Search & Replace panel |
 | `<Space>` + `sw` | Replace word | Search & replace the word under your cursor |
@@ -99,6 +100,7 @@ A quick reference guide for your terminal-based IDE setup.
 | `m` | **Move / Cut** file |
 | `H` | Toggle hidden files (`.dotfiles`) |
 | `P` | Toggle floating file preview |
+| `F` | **Search text inside this specific folder** (Find in folder) |
 
 ---
 

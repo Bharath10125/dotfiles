@@ -84,6 +84,11 @@ return {
                     ["l"] = "open",
                     ["h"] = "close_node",
                     ["P"] = { "toggle_preview", config = { use_float = true } },
+                    ["F"] = function(state)
+                        local node = state.tree:get_node()
+                        local path = node.type == "directory" and node:get_id() or vim.fs.dirname(node:get_id())
+                        require("telescope.builtin").live_grep({ search_dirs = { path } })
+                    end,
                 },
             },
         },

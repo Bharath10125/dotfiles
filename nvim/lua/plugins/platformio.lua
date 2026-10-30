@@ -18,14 +18,15 @@ return {
             {
                 "<leader>pb",
                 function()
-                    require("toggleterm").exec("pio run")
+                    -- Build AND regenerate compile_commands.json automatically
+                    require("toggleterm").exec("pio run -t compiledb && pio run")
                 end,
                 desc = "PlatformIO: Build / Compile",
             },
             {
                 "<leader>pu",
                 function()
-                    require("toggleterm").exec("pio run --target upload")
+                    require("toggleterm").exec("pio run -t compiledb && pio run --target upload")
                 end,
                 desc = "PlatformIO: Upload Firmware",
             },
@@ -39,7 +40,7 @@ return {
             {
                 "<leader>pr",
                 function()
-                    require("toggleterm").exec("pio run --target upload && pio device monitor")
+                    require("toggleterm").exec("pio run -t compiledb && pio run --target upload && pio device monitor")
                 end,
                 desc = "PlatformIO: Upload & Monitor",
             },
